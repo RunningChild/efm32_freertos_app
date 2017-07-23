@@ -1,0 +1,1 @@
+gcc -o encrypt encrypt.c -L./ -ltomcrypt -I ..\libtomcrypt-1.17\src\headers\

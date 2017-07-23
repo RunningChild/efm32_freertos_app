@@ -1,0 +1,6 @@
+si 1
+speed 4000
+h
+loadfile application_header.bin,0x4000
+r
+g
