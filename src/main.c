@@ -8,6 +8,7 @@
 #include "app_timer.h"
 #include "delay.h"
 #include "hal_manager.h"
+#include "wall_clock_timer.h"
 
 #include "log.h"
 
@@ -103,6 +104,9 @@ int main(void)
     //定时器实现延时初始化
     delay_init();
 
+    //万年历初始化
+    calendar_init(wall_clock_timer_init, wall_clock_timer_restart, &wall_clock_timeout_hander, NULL);
+
     /******************************************************
     * 以下创建各个部分线程，并为各个线程分配软件看门狗。同时创建监控线程，负责监控各个线程的存活。
     ******************************************************/
@@ -120,7 +124,7 @@ int main(void)
     monitor_init();
 
     //周期性线程
-    period_init();
+//    period_init();
 
     //开始FreeRTOS调度器
     vTaskStartScheduler();

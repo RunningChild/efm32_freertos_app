@@ -597,6 +597,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\bsp\uart_device\uart_driver.c</FilePath>
             </File>
+            <File>
+              <FileName>wall_clock_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\bsp\system\misc\wall_clock_timer.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

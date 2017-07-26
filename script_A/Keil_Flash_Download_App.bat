@@ -1,6 +1,6 @@
 @echo off
 
-cd ../script_F3/
+cd ../script_A/
 
 
 @echo ²Á³ýSWAP...

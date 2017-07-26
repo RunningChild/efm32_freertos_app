@@ -16,7 +16,7 @@ extern "C" {
 
 #ifndef RELEASE_VERSION_ENABLE
 //release app或者bootloader版本使能位
-#define RELEASE_VERSION_ENABLE              (1)//(0) //默认打开
+#define RELEASE_VERSION_ENABLE              (0)//(0) //默认打开
 #endif
 
 

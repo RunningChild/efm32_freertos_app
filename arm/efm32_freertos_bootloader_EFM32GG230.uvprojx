@@ -80,7 +80,7 @@
           <AfterMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>fromelf.exe --bin --output obj1\f3_bootloader_EFM32GG230.bin obj1\f3_bootloader_EFM32GG230.axf</UserProg1Name>
+            <UserProg1Name>fromelf.exe --bin --output obj1\bootloader_EFM32GG230.bin obj1\bootloader_EFM32GG230.axf</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -175,7 +175,7 @@
             <Capability>1</Capability>
             <DriverSelection>4099</DriverSelection>
           </Flash1>
-          <bUseTDR>1</bUseTDR>
+          <bUseTDR>0</bUseTDR>
           <Flash2>Segger\JL2CM3.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
