@@ -41,3 +41,36 @@
 	
 	    ——public_libs:
 	    		    ——common_libs：          与平台无关的小工具，包括万年历、系统错误码检查等。
+
+#### 功能介绍
+##### 1) system low power manager
+
+参考 src/app/thread_manager/FreeRTOS系统实现低功耗管理.md
+
+##### 2）freertos documenets
+
+参考common/FreeRTOS API spec.pdf
+
+参考common/FreeRTOS入门手册_中文.pdf
+
+参考src/bsp/FreeRTOS系统管理中断优先级.md
+
+参考src/app/thread_manager/FreeRTOS系统线程调度.md
+
+##### 3) calendar
+
+使用内部的低功耗硬件定时器
+
+	#define FM_INNER_BURTC
+
+软件也增加了calendar初始化配置，其实在实际应用中，这是没必要的。
+
+    calendar_init(wall_clock_timer_init, wall_clock_timer_restart, &wall_clock_timeout_hander, NULL);
+
+增加了打印系统启动以后运行的软件和硬件秒数，在这里一块打印，可以很好直观地看到。
+
+    LOG(LEVEL_DEBUG, "soft second=%d, hal second=%d", cur_second_count, get_uptime_second());
+
+参考 src/common_libs/calendar/readme.md
+
+##### 4）
