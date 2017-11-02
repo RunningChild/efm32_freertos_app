@@ -602,6 +602,11 @@
               <FileType>1</FileType>
               <FilePath>..\src\bsp\system\misc\wall_clock_timer.c</FilePath>
             </File>
+            <File>
+              <FileName>inner_rtc_action.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\bsp\system\misc\inner_rtc_action.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -831,11 +836,6 @@
               <FileName>calendar.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\public_libs\common_libs\calendar\calendar.c</FilePath>
-            </File>
-            <File>
-              <FileName>calendar_enhance.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\public_libs\common_libs\calendar\calendar_enhance.c</FilePath>
             </File>
             <File>
               <FileName>app_error.c</FileName>

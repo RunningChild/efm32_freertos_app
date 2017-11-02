@@ -57,7 +57,7 @@
 
 参考src/app/thread_manager/FreeRTOS系统线程调度.md
 
-##### 3) calendar
+##### 3) calendar组件
 
 使用内部的低功耗硬件定时器
 
@@ -73,4 +73,12 @@
 
 参考 src/common_libs/calendar/readme.md
 
-##### 4）
+##### 4）softwdt组件
+
+实现类似硬件看门狗一样对所有线程存活状态进行全局监控的软件看门狗。
+参考 src/common_libs/softwdt/readme.md
+
+##### 5）wait_event组件
+
+一种自定义事件的异步回调处理框架。
+参考 src/common_libs/wait_event/readme.md
