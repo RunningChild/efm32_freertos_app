@@ -3,6 +3,7 @@
 #include "sleep.h"
 #include "gpiointerrupt.h"
 #include "em_gpio.h"
+#include "inner_rtc_action.h"
 
 #include "app_manager.h"
 #include "thread_manager.h"
@@ -49,7 +50,11 @@ void hal_init(void)
     gpio_interrupt_init_and_disable();
 
 #if defined(FM_INNER_BURTC)
+    //BURTC初始化
     hal_burtc_init();
+
+    //内部BURTC时间，同步到软件万年历
+    calendar_sync_from_inner_rtc();
 #endif
 
     //全局设置无用的引脚为失能状态
