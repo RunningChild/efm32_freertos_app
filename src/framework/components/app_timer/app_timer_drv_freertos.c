@@ -23,6 +23,7 @@ uint32_t app_timer_get_second(void)
 uint32_t app_timer_get_millisecond(void)
 {
     //无法实现
+    return 0;
 }
 #endif
 

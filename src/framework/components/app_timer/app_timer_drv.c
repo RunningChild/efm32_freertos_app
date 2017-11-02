@@ -61,13 +61,8 @@ uint32_t app_timer_get_millisecond(void)
 
 
 // Maximum number of ticks per overflow period (not the maximum tick value)
-#if (TIMER_COUNT_UP == TIMER_COUNT_DIRECTION)
 #define MAX_RTC_TICK_CNT                (RTC_MAX_VALUE+1UL)
 #define RTC_CLOSE_TO_MAX_VALUE          (RTC_MAX_VALUE-100UL)
-#elif (TIMER_COUNT_DOWN == TIMER_COUNT_DIRECTION)
-#define MAX_RTC_TICK_CNT                (1UL)
-#define RTC_CLOSE_TO_MAX_VALUE          (100UL)
-#endif
 
 
 #define MSEC_TO_TICKS_DIVIDER           ( 1000U * RTC_DIVIDER )
@@ -109,8 +104,6 @@ static volatile uint32_t  startTimerNestingLevel;
 static bool               inTimerIRQ;
 static bool               rtcRunning;
 static bool               rtcdrvIsInitialized = false;
-
-static hal_timer_over_flow_irq_process wall_clock_over_flow_irq_process = NULL;
 
 
 static void checkAllTimers( uint32_t timeElapsed );
@@ -228,7 +221,7 @@ Ecode_t RTCDRV_FreeTimer( RTCDRV_TimerID_t id )
  * @return
  *    @ref ECODE_EMDRV_RTCDRV_OK.
  ******************************************************************************/
-Ecode_t RTCDRV_Init(const hal_timer_init timer_init, const hal_timer_over_flow_irq_process timer_over_flow_process)
+Ecode_t RTCDRV_Init(const hal_timer_init timer_init)
 {
     if ( rtcdrvIsInitialized == true ) {
         return ECODE_EMDRV_RTCDRV_OK;
@@ -240,9 +233,6 @@ Ecode_t RTCDRV_Init(const hal_timer_init timer_init, const hal_timer_over_flow_i
     {
         timer_init();
     }
-
-    //赋值溢出中断处理函数
-    wall_clock_over_flow_irq_process = timer_over_flow_process;
 
     // Reset RTCDRV internal data structures/variables.
     memset( timer, 0, sizeof( timer ) );
@@ -412,11 +402,7 @@ Ecode_t RTCDRV_StartTimer(  RTCDRV_TimerID_t id,
 
     RTC_INTCLEAR( RTC_COMP_INT );
 
-#if (TIMER_COUNT_UP == TIMER_COUNT_DIRECTION)
     compVal = SL_MIN( timer[ id ].remaining, RTC_CLOSE_TO_MAX_VALUE );
-#elif (TIMER_COUNT_DOWN == TIMER_COUNT_DIRECTION)
-    compVal = SL_MAX( timer[ id ].remaining, RTC_CLOSE_TO_MAX_VALUE );
-#endif
 
 #if (TIMER_COUNT_UP == TIMER_COUNT_DIRECTION)
     RTC_COMPARESET( cnt + compVal );
@@ -751,11 +737,7 @@ static void rescheduleRtc( uint32_t rtcCnt )
   rtcRunning = false;
   if ( min != UINT64_MAX ) {
 
-#if (TIMER_COUNT_UP == TIMER_COUNT_DIRECTION)
     min = SL_MIN( min, RTC_CLOSE_TO_MAX_VALUE );
-#elif (TIMER_COUNT_DOWN == TIMER_COUNT_DIRECTION)
-    min = SL_MAX( min, RTC_CLOSE_TO_MAX_VALUE );
-#endif
 
 #if (32 != RTC_COUNTER_BITS)
     if ( inTimerIRQ == false ) {
@@ -845,12 +827,6 @@ void APP_TIMER_DRV_IRQHandler(void)
         RTC_INTCLEAR( RTC_OF_INT );
 
         time_overflow_counter++;
-
-        //执行wall_clock溢出处理函数
-        if(NULL != wall_clock_over_flow_irq_process)
-        {
-            wall_clock_over_flow_irq_process();
-        }
     }
 
     INT_Enable();

@@ -13,27 +13,6 @@
 
 static bool hal_letimer_initialized = false;
 
-#if defined(EMDRV_RTCDRV_WALLCLOCK_CONFIG)
-/***************************************************************************//**
- * @brief hal_letimer_over_flow_irq_process
- ******************************************************************************/
-void hal_letimer_over_flow_irq_process(void)
-{
-    uint32_t overflowcnt = wallclock_get_overflowcnt();
-
-    //更新溢出值
-    wallclock_set_overflowcnt(overflowcnt++);
-}
-#else
-/***************************************************************************//**
- * @brief hal_letimer_over_flow_irq_process
- ******************************************************************************/
-__attribute__(( weak )) void hal_letimer_over_flow_irq_process(void)
-{
-
-}
-#endif
-
 /***************************************************************************//**
  * @brief hal_letimer_init
  ******************************************************************************/

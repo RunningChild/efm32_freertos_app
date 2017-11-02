@@ -7,7 +7,7 @@ extern "C" {
 
 
 #define RTC_CLOCK                     (32768U)
-#define RTC_DIVIDER                   (cmuClkDiv_8)
+#define RTC_DIVIDER                   (cmuClkDiv_128)
 #define TIMER_COUNT_DIRECTION         (TIMER_COUNT_UP)//向上计数
 
 #define TIMEDIFF( a, b )              ((a) - (b))

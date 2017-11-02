@@ -15,7 +15,6 @@ extern "C" {
 
 
 //对外函数接口
-void hal_letimer_over_flow_irq_process(void);
 Ecode_t hal_letimer_init(void);
 Ecode_t hal_letimer_deinit(void);
 

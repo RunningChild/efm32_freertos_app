@@ -137,25 +137,38 @@ static void clock_restore( void )
     /* Timestamp is BURTC value at time of main power loss */
     burtcTimestamp = BURTC_TimestampGet();
 
-    /* Clear BURTC timestamp */
-    BURTC_StatusClear();
-
     /* Read overflow counter from retention memory */
     burtcOverflowCounter = BURTC_RetRegGet( 0 );
 
     /* Check for overflow while in backup mode
     Assume that overflow interval >> backup source capacity
     i.e. that overflow has only occured once during main power loss */
-    if ( burtcCount < burtcTimestamp )
+    if( (_BURTC_STATUS_BUMODETS_MASK == (BURTC_Status() & BURTC_STATUS_BUMODETS))
+     && (_EMU_STATUS_BURDY_MASK == (EMU->STATUS & EMU_STATUS_BURDY))//backup functionality is also available
+      )
     {
-        burtcOverflowCounter++;
+        LOG_RELEASE(LEVEL_DEBUG, "BUMODE");
+
+        if(burtcCount < burtcTimestamp)
+        {
+            LOG_RELEASE(LEVEL_DEBUG, "Overflow");
+            burtcOverflowCounter++;
+        }
     }
+
+    /* Clear BURTC timestamp */
+    BURTC_StatusClear();
 
     /* Restore epoch offset from retention memory */
     wallclock_set_timebase(BURTC_RetRegGet(1));
+    LOG(LEVEL_DEBUG, "restore TimeBase=%d", wallclock_get_timebase());
 
     /* Restore clock overflow counter */
     wallclock_set_overflowcnt(burtcOverflowCounter);
+
+    //考虑到OverflowCounter可能会变化，强制存储
+    /* retention registers */
+    clock_backup();
 }
 
 /***************************************************************************//**
@@ -206,8 +219,8 @@ static bool clock_Init(void)
 
         //设置默认的系统时间2000-02-01 00:00:00
         wallclock_set_timebase(linux_mktime(BEGYEAR, 2, 1,
-                                         0, 0, 0,
-                                         0));
+                                             0, 0, 0,
+                                             0));
         LOG(LEVEL_DEBUG, "settime TimeBase=%d", wallclock_get_timebase());
 
         /* Start BURTC */
@@ -282,39 +295,15 @@ void clock_settime(const uint32_t set_timestamp)
 /***************************************************************************//**
  * @brief hal_burtc_over_flow_irq_process
  ******************************************************************************/
-void hal_burtc_over_flow_irq_process(void)
+static void hal_burtc_over_flow_irq_process(void)
 {
     uint32_t overflowcnt = wallclock_get_overflowcnt();
 
     //更新溢出值
-    wallclock_set_overflowcnt(overflowcnt++);
+    wallclock_set_overflowcnt(++overflowcnt);
 
     //保存到备份域
     clock_backup();
-}
-#else
-/******************************************************************************
- * @brief clock_gettime
- *****************************************************************************/
-__attribute__(( weak )) uint32_t clock_gettime(void)
-{
-    return 0;
-}
-
-/***************************************************************************//**
- * @brief Set the epoch offset
- ******************************************************************************/
-__attribute__(( weak )) void clock_settime(const uint32_t set_timestamp)
-{
-
-}
-
-/***************************************************************************//**
- * @brief hal_burtc_over_flow_irq_process
- ******************************************************************************/
-__attribute__(( weak )) void hal_burtc_over_flow_irq_process(void)
-{
-
 }
 #endif
 

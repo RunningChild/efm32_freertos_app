@@ -15,7 +15,6 @@ extern "C" {
 
 
 //对外函数接口
-void hal_rtc_over_flow_irq_process(void);
 Ecode_t hal_rtc_init(void);
 Ecode_t hal_rtc_deinit(void);
 

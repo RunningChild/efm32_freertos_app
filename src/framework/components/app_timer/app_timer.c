@@ -20,13 +20,13 @@ void app_timer_init(void)
     // Initialization of RTCDRV driver
 #if (APP_TIMER_DRV_BURTC == APP_TIMER_DRV_SRC)
 #warning "app_timer_drv use burtc"
-    error_code = RTCDRV_Init(hal_burtc_init, hal_burtc_over_flow_irq_process);
+    error_code = RTCDRV_Init(hal_burtc_init);
 #elif (APP_TIMER_DRV_RTC == APP_TIMER_DRV_SRC)
 #warning "app_timer_drv use rtc"
-    error_code = RTCDRV_Init(hal_rtc_init, hal_rtc_over_flow_irq_process);
+    error_code = RTCDRV_Init(hal_rtc_init);
 #elif (APP_TIMER_DRV_LETIMER == APP_TIMER_DRV_SRC)
 #warning "app_timer_drv use letimer"
-    error_code = RTCDRV_Init(hal_letimer_init, hal_letimer_over_flow_irq_process);
+    error_code = RTCDRV_Init(hal_letimer_init);
 #elif defined(USE_FREERTOS_SOFT_TIMERS)
 #warning "app_timer_drv use freertos soft_timers"
 #endif
